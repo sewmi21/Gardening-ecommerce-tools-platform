@@ -1,6 +1,7 @@
 package Controller;
 import View.ConsoleView;
 import model.Cart;
+import model.OrderManager;
 import model.Product;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ public class Controller {
     private List<Product> products = new ArrayList<>();
     private Cart cart = new Cart();
     private ConsoleView view = new ConsoleView();
+    private OrderManager orderManager = new OrderManager();
 
     public Controller() {
         // Adding some sample products
@@ -33,6 +35,8 @@ public class Controller {
                 case 3 -> addToCart();
                 case 4 -> cart.showCart();
                 case 5 -> placeOrder();
+                case 6 -> viewOrders();
+                case 7 -> cancelOrder();
                 case 0 -> running = false;
                 default -> System.out.println("Invalid option. Please try again.");
             }
@@ -94,6 +98,21 @@ public class Controller {
         } else {
             cart.showCart();
             System.out.println("Thank you for your purchase! Your order has been placed!");
+            orderManager.addOrder(cart);
+            cart = new Cart();
+        }
+    }
+
+    private void viewOrders() {
+        view.displayOrders(orderManager.getOrders());
+    }
+
+    private void cancelOrder() {
+        String orderId = view.promptOrderIdForCancellation();
+        if (orderManager.cancelOrder(orderId)) {
+            view.showOrderCancellationSuccess();
+        } else {
+            view.showOrderCancellationFailure();
         }
     }
 }
