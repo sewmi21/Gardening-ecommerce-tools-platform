@@ -38,9 +38,7 @@ public class ConsoleView {
     }
 
     public int promptMenuSelection() {
-        System.out
-                .println(
-                        "1. View Products\n2. Search Product\n3. Add to Cart\n4. View Cart\n5. Place Order\n6. View Orders\n7. Cancel Order\n"
+        System.out.println("1. View Products\n2. View Product Categories\n3. Search Product\n4. Search Category\n5. Add to Cart\n6. View Cart\n7. Place Order\n8. View Orders\n9. Cancel Order\n"
                                 + //
                                 "0. Exit");
         System.out.print("Select an option: ");
