@@ -3,23 +3,42 @@ import View.ConsoleView;
 import model.Cart;
 import model.OrderManager;
 import model.Product;
+import model.ProductCategory;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Controller {
     private List<Product> products = new ArrayList<>();
+    private List<ProductCategory> productCategories = new ArrayList<>();
     private Cart cart = new Cart();
     private ConsoleView view = new ConsoleView();
     private OrderManager orderManager = new OrderManager();
 
     public Controller() {
+        // Defining Product Categories
+        ProductCategory handTools = new ProductCategory(1, "Hand Tools", "Small-scale gardening tasks such as digging, planting, and trimming", 0); 
+        ProductCategory diggingTools = new ProductCategory(2, "Digging Tools", "For digging, lifting, and turning soil", 0); 
+        ProductCategory wateringTools = new ProductCategory(3, "Watering Tools", "Wide range of watering tools to hydrate plants", 0); 
+        ProductCategory protectiveGear = new ProductCategory(4, "Protective Gear", "Gears to protect you while working in the garden, ensuring comfort and safety.", 0); 
+        ProductCategory miscellaneous = new ProductCategory(5, "Miscellaneous", "Other gardening tools", 0); 
+
+        // Adding Product Categories
+        productCategories.add(handTools); 
+        productCategories.add(diggingTools); 
+        productCategories.add(wateringTools); 
+        productCategories.add(protectiveGear); 
+        productCategories.add(miscellaneous);
+        
         // Adding some sample products
-        products.add(new Product("Shovel", 30, 50));
-        products.add(new Product("Garden Fork", 20, 50));
-        products.add(new Product("Gloves", 25, 50));
-        products.add(new Product("Rake", 15, 30));
-        products.add(new Product("Spade", 45, 30));
-        products.add(new Product("Watering Can", 20, 100));
+        products.add(new Product("Shovel", 30, 50, diggingTools));
+        products.add(new Product("Garden Fork", 20, 50, diggingTools));
+        products.add(new Product("Gloves", 25, 50, protectiveGear));
+        products.add(new Product("Rake", 15, 30, miscellaneous));
+        products.add(new Product("Spade", 45, 30, diggingTools));
+        products.add(new Product("Watering Can", 20, 100, wateringTools));
+
+        // Update product counts
+        updateProductCounts();
     }
 
     public void start() {
@@ -31,12 +50,14 @@ public class Controller {
             int choice = view.promptMenuSelection();
             switch (choice) {
                 case 1 -> viewProducts();
-                case 2 -> searchProduct();
-                case 3 -> addToCart();
-                case 4 -> cart.showCart();
-                case 5 -> placeOrder();
-                case 6 -> viewOrders();
-                case 7 -> cancelOrder();
+                case 2 -> viewProductCategories();
+                case 3 -> searchProduct();
+                case 4 -> searchCategory();
+                case 5 -> addToCart();
+                case 6 -> cart.showCart();
+                case 7 -> placeOrder();
+                case 8 -> viewOrders();
+                case 9 -> cancelOrder();
                 case 0 -> running = false;
                 default -> System.out.println("Invalid option. Please try again.");
             }
@@ -65,6 +86,23 @@ public class Controller {
             view.displayProduct(product);
         }
     }
+
+    //Update Product Count for Product Category
+    private void updateProductCounts() { 
+        for (ProductCategory category : productCategories) { 
+            int count = (int) products.stream().filter(p -> p.getCategory().equals(category)).count(); 
+            category.setProductCount(count); 
+        }
+    }   
+    //View product categories
+    private void viewProductCategories() {
+        System.out.println("\nAvailable Product Categories:");
+        //view each product in the stock
+        for (ProductCategory category : productCategories) {
+            view.displayProductCategory(category);
+        }
+    }
+
     //Search products
     private void searchProduct() {
         String name = view.promptProductName();
@@ -77,6 +115,20 @@ public class Controller {
         }
         System.out.println("Product not found!");
     }
+
+    //Search Product Category
+    private void searchCategory() {
+        String name = view.promptCategoryName();
+        for (ProductCategory category : productCategories) {
+            if (category.getName().equalsIgnoreCase(name)) {
+                view.displayProductCategory(category);
+                return;
+            }     
+        }
+        System.out.println("Category not found!");
+        if (products.isEmpty()) { System.out.println("No products found in this category."); }
+    }
+    
     //Add products to the cart
     private void addToCart() {
         String name = view.promptProductName();

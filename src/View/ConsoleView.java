@@ -2,6 +2,7 @@ package View;
 
 import model.Order;
 import model.Product;
+import model.ProductCategory;
 
 import java.util.List;
 import java.util.Scanner;
@@ -52,6 +53,13 @@ public class ConsoleView {
         return scanner.next();
     }
 
+    //Prompt category name to take user inputs for category search
+    public String promptCategoryName() {
+        System.out.print("\nEnter category name: ");
+        scanner.nextLine();
+        return scanner.nextLine();
+    }
+
     // Ask user to add product quantity
     public int promptQuantity() {
         System.out.print("Enter quantity: ");
@@ -59,8 +67,12 @@ public class ConsoleView {
     }
 
     public void displayProduct(Product product) {
-        System.out.println(
-                "Product: " + product.getName() + ", Price: $" + product.getPrice() + ", Stock: " + product.getStock());
+        System.out.println("Product: " + product.getName() + ", Price: $" + product.getPrice() + ", Stock: " + product.getStock() + ", Category: " + product.getCategory());
+    }
+
+    // Display Product Category
+    public void displayProductCategory(ProductCategory productCategory) {
+        System.out.println("Code: " + productCategory.getId() + " Category: " + productCategory.getName() + " - " + productCategory.getDescription()+ ", Number of items: " + productCategory.getproductCount());
     }
 
     public void showTotal(double total) {
