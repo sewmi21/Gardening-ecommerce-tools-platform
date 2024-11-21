@@ -116,19 +116,35 @@ public class Controller {
         System.out.println("Product not found!");
     }
 
-    //Search Product Category
-    private void searchCategory() {
-        String name = view.promptCategoryName();
-        for (ProductCategory category : productCategories) {
-            if (category.getName().equalsIgnoreCase(name)) {
-                view.displayProductCategory(category);
-                return;
-            }     
+    //Search Product by Category
+    public void searchCategory() { 
+        String name = view.promptCategoryName(); //get category name
+        ProductCategory foundCategory = null; 
+        for (ProductCategory category : productCategories) { 
+            if (category.getName().equalsIgnoreCase(name)) { 
+                foundCategory = category; 
+                break; 
+            } 
+        } 
+        if (foundCategory != null) { 
+            view.displayProductCategory(foundCategory); 
+            List<Product> categoryProducts = getProductsByCategory(foundCategory); 
+            view.displayProductsbyCategory(categoryProducts); // display products for the provided category
+        } 
+        else { 
+            System.out.println("Category not found!"); 
         }
-        System.out.println("Category not found!");
-        if (products.isEmpty()) { System.out.println("No products found in this category."); }
     }
-    
+    // Get Products for the seelcted category
+    private List<Product> getProductsByCategory(ProductCategory category) { 
+        List<Product> categoryProducts = new ArrayList<>(); 
+            for (Product product : products) { 
+                if (product.getCategory().equals(category)) { 
+                    categoryProducts.add(product); 
+                } 
+            } 
+            return categoryProducts;
+        }
     //Add products to the cart
     private void addToCart() {
         String name = view.promptProductName();
