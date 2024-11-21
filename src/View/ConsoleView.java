@@ -38,7 +38,7 @@ public class ConsoleView {
     }
 
     public int promptMenuSelection() {
-        System.out.println("1. View Products\n2. View Product Categories\n3. Search Product\n4. Search Category\n5. Add to Cart\n6. View Cart\n7. Place Order\n8. View Orders\n9. Cancel Order\n"
+        System.out.println("1. View Products\n2. View Product Categories\n3. Search Product\n4. Search Product by Category\n5. Add to Cart\n6. View Cart\n7. Place Order\n8. View Orders\n9. Cancel Order\n"
                                 + //
                                 "0. Exit");
         System.out.print("Select an option: ");
@@ -68,9 +68,17 @@ public class ConsoleView {
         System.out.println("Product: " + product.getName() + ", Price: $" + product.getPrice() + ", Stock: " + product.getStock() + ", Category: " + product.getCategory());
     }
 
-    // Display Product Category
-    public void displayProductCategory(ProductCategory productCategory) {
-        System.out.println("Code: " + productCategory.getId() + " Category: " + productCategory.getName() + " - " + productCategory.getDescription()+ ", Number of items: " + productCategory.getproductCount());
+    // Display the products by category
+    public void displayProductsbyCategory(List<Product> products) { 
+        System.out.println("Products in the category:"); 
+        if (products.isEmpty()) { 
+            System.out.println("No products found in this category."); 
+        } 
+        else { 
+            for (Product product : products) { 
+                System.out.println("Product: " + product.getName() + ", Price: $" + product.getPrice() + ", Stock: " + product.getStock() + ", Category: " + product.getCategory().getName()); System.out.println("-----------"); 
+            } 
+        }
     }
 
     public void showTotal(double total) {
